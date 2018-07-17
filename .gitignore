@@ -1,4 +1,5 @@
 node_modules/
 *.log
-Original_Template
+_Original_Template
 Commands_Personal-Info.txt
+.env

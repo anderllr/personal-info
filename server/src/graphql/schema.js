@@ -7,14 +7,16 @@ import { Mutation } from './mutation';
 import { userTypes } from './types/user.schema';
 import { personTypes } from './types/person.schema';
 import { qualificationsTypes } from './types/qualifications.schema';
+import { tokenTypes } from './types/token.schema';
 
 import userResolvers from './resolvers/user.resolver';
 import personResolvers from './resolvers/person.resolver';
 import qualificationsResolvers from './resolvers/qualifications.resolver';
+import tokenResolver from './resolvers/token.resolver';
 
 //using lodash to merge my resolvers
 //const resolvers = merge(commentResolvers, postResolvers, tokenResolvers, userResolvers);
-const resolvers = merge(userResolvers, personResolvers, qualificationsResolvers);
+const resolvers = merge(userResolvers, personResolvers, qualificationsResolvers, tokenResolver);
 
 const SchemaDefinition = `
     type Schema {
@@ -24,6 +26,6 @@ const SchemaDefinition = `
 `;
 
 export default makeExecutableSchema({
-	typeDefs: [SchemaDefinition, Query, Mutation, userTypes, personTypes, qualificationsTypes],
+	typeDefs: [SchemaDefinition, Query, Mutation, userTypes, personTypes, qualificationsTypes, tokenTypes],
 	resolvers,
 });
