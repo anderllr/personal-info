@@ -20,10 +20,6 @@ const userTypes = `
 const userQueries = `
     users: [ User ]
     user(id: ID!): User!
-    login(
-        email: String!,
-        password: String!
-    ): User!
 `;
 
 const userMutations = `

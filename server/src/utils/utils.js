@@ -7,7 +7,7 @@ export const env = {
     genSaltNumber: 10
 }
 */
-import { env } from '../../src/.env';
+const env = require('dotenv').config();
 
-export const JWT_SECRET = env.authSecret;
-export const GEN_SALT_NUMBER = env.genSaltNumber;
+export const JWT_SECRET = process.env.AUTH_SECRET;
+export const GEN_SALT_NUMBER = process.env.GEN_SALT_NUMBER;

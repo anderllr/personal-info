@@ -1,3 +1,5 @@
+import { authenticated } from './auth.resolver';
+
 export default {
 	Qualification: {
 		person: async (qualification, args, { db }) => {
@@ -19,22 +21,22 @@ export default {
 		},
 	},
 	Mutation: {
-		createQualification: async (parent, { input }, { db }) => {
+		createQualification: authenticated(async (parent, { input }, { db }) => {
 			const { Qualifications } = db;
 
 			const qualifications = new Qualifications(input);
 
 			await qualifications.save();
 			return qualifications;
-		},
-		updateQualification: async (parent, { id, input }, { db }) => {
+		}),
+		updateQualification: authenticated(async (parent, { id, input }, { db }) => {
 			const { Qualifications } = db;
 			const qualifications = await Qualifications.findById(id);
 			qualifications.set(input);
 			await qualifications.save();
 			return qualifications;
-		},
-		deleteQualification: async (parent, { id }, { db }) => {
+		}),
+		deleteQualification: authenticated(async (parent, { id }, { db }) => {
 			const { Qualifications } = db;
 			const qualificationRemoved = await Qualifications.findByIdAndRemove(id);
 
@@ -43,6 +45,6 @@ export default {
 			}
 
 			return qualificationRemoved;
-		},
+		}),
 	},
 };

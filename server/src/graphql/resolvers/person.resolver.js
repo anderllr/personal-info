@@ -1,3 +1,5 @@
+import { authenticated } from './auth.resolver';
+
 export default {
 	Person: {
 		qualifications: async (person, args, { db }) => {
@@ -14,7 +16,7 @@ export default {
 		},
 	},
 	Mutation: {
-		createPerson: async (parent, { input }, { db }) => {
+		createPerson: authenticated(async (parent, { input }, { db }) => {
 			const { Person } = db;
 			//First check if have register in our Person collection
 			//Because I don't want to register more than once
@@ -26,14 +28,14 @@ export default {
 			const personNew = new Person(input);
 			await personNew.save();
 			return personNew;
-		},
-		updatePerson: async (parent, { id, input }, { db }) => {
+		}),
+		updatePerson: authenticated(async (parent, { id, input }, { db }) => {
 			const { Person } = db;
 			const person = await Person.findById(id);
 			await person.set(input).save();
 			return person;
-		},
-		deletePerson: async (parent, { id }, { db }) => {
+		}),
+		deletePerson: authenticated(async (parent, { id }, { db }) => {
 			const { Person } = db;
 			const personRemoved = await Person.findByIdAndRemove(id);
 
@@ -42,6 +44,6 @@ export default {
 			}
 
 			return personRemoved;
-		},
+		}),
 	},
 };

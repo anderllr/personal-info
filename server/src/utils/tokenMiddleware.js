@@ -1,12 +1,13 @@
 import jwt from 'jsonwebtoken';
 
-import db from '../models';
-import { JWT_SECRET } from '../utils/utils';
-import { UserInstance } from '../models/UserModel';
+import { db } from '../models';
+import { JWT_SECRET } from './utils';
 
 export const tokenMiddleware = (req, res, next) => {
-	let authorization: string = req.get('authorization');
-	let token: string = authorization ? authorization.split(' ')[1] : undefined;
+	let authorization = req.get('authorization');
+	//The token is passed starting with name bearer so we don't need this
+	//That's why I do the split
+	let token = authorization ? authorization.split(' ')[1] : undefined;
 
 	req['context'] = {};
 	req['context']['authorization'] = authorization;
@@ -15,18 +16,15 @@ export const tokenMiddleware = (req, res, next) => {
 		return next();
 	}
 
-	jwt.verify(token, JWT_SECRET, (err, decoded: any) => {
+	jwt.verify(token, JWT_SECRET, (err, decoded) => {
 		if (err) {
 			return next();
 		}
-
-		db.User.findById(decoded.sub, {
-			attributes: ['id', 'email'],
-		}).then((user: UserInstance) => {
+		db.User.findById(decoded.sub).then(user => {
 			if (user) {
 				req['context']['authUser'] = {
-					id: user.get('id'),
-					email: user.get('email'),
+					id: user._id,
+					email: user.email,
 				};
 			}
 
