@@ -1,4 +1,4 @@
-import { Person, Qualifications } from './Person';
+import { Person } from './Person';
 import { User } from './User';
 
-export const db = { Person, Qualifications, User };
+export const db = { Person, User };

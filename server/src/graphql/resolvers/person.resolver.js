@@ -3,8 +3,7 @@ import { authenticated } from './auth.resolver';
 export default {
 	Person: {
 		qualifications: async (person, args, { db }) => {
-			const qualifications = await db.Qualifications.find({ personId: person._id });
-			return qualifications;
+			return person.qualifications;
 		},
 	},
 	Query: {

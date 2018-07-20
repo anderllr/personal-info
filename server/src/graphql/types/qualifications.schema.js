@@ -4,13 +4,11 @@ const qualificationsTypes = `
         id: ID!
         qualification: String!
         description: String!
-        person: Person
     }
 
     input QualificationInput {
         qualification: String!
         description: String!
-        personId: ID!
     }
 
 `;
@@ -20,9 +18,9 @@ const qualificationsQueries = `
 `;
 
 const qualificationsMutations = `
-    createQualification(input: QualificationInput!): Qualification
-    updateQualification(id: ID!, input: QualificationInput!): Qualification
-    deleteQualification(id: ID!): Boolean
+    createQualification(personId: ID!, input: QualificationInput!): Qualification
+    updateQualification(personId: ID!, id: ID!, input: QualificationInput!): Qualification
+    deleteQualification(personId: ID!, id: ID!): Boolean
 `;
 
 export { qualificationsTypes, qualificationsQueries, qualificationsMutations };

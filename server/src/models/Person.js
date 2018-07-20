@@ -8,18 +8,10 @@ import mongoose from 'mongoose';
 */
 
 //QualificationsSchema to inform some expertise that person have
-const QualificationsSchema = new mongoose.Schema(
-	{
-		personId: {
-			type: mongoose.Schema.Types.ObjectId,
-			required: true,
-			ref: 'person',
-		},
-		qualification: { type: String, required: true },
-		description: { type: String, required: true },
-	},
-	{ collection: 'qualifications' }
-);
+const QualificationsSchema = new mongoose.Schema({
+	qualification: { type: String, required: true },
+	description: { type: String, required: true },
+});
 
 //Area to inform technical skills with percentage of each one... like Javascript 80%
 const TechnicalSchema = new mongoose.Schema({
@@ -37,9 +29,9 @@ const PersonSchema = new mongoose.Schema(
 		email: { type: String, required: true },
 		description: { type: String, required: true },
 		picture_url: String,
+		qualifications: [QualificationsSchema],
 	},
 	{ collection: 'person' }
 );
 
 export const Person = mongoose.model('Person', PersonSchema);
-export const Qualifications = mongoose.model('Qualifications', QualificationsSchema);
