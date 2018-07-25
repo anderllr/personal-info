@@ -2,10 +2,10 @@
 // Or to keep information safe
 //You have to create your own .env file with your secret information like example:
 /*
-export const env = {
-    authSecret: 'MypersonalSecret',
-    genSaltNumber: 10
-}
+
+AUTH_SECRET= 'gooddddexplanation'
+GEN_SALT_NUMBER= 10
+
 */
 const env = require('dotenv').config();
 

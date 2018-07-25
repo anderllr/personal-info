@@ -24,8 +24,8 @@ const userQueries = `
 
 const userMutations = `
     createUser(input: UserCreateInput!): User
-    updateUserPassword(input: UserUpdatePasswordInput!): Boolean
-    deleteUser: Boolean
+    updateUserPassword(id: ID!, input: UserUpdatePasswordInput!): Boolean
+    deleteUser(id: ID!): Boolean
 `;
 
 export { userTypes, userQueries, userMutations };
