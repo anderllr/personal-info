@@ -1,10 +1,11 @@
 import React from 'react';
-import Main from '../template/Main';
+import { Link } from 'react-router-dom';
 
-export default props =>
-    <Main icon="home" title="Início"
-        subtitle="Segundo projeto react">
-        <div className='display-4'>Welcome!</div>
-        <hr />
-        <p className="mb-0">App to register personal information to show in personal public profile!</p>
-    </Main>
+export default props => (
+    <div>
+        <h1>Página de abertura</h1>
+        <Link to="/admin">
+            <i className="fa fa-home"></i> Admin
+        </Link>
+    </div>
+)

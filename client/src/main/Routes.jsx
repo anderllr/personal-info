@@ -1,12 +1,13 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router';
 
-import Home from '../components/screens/Home';
-import UserCrud from '../components/screens/UserCrud';
+import { Admin, Home, Login, UserCrud } from '../components/screens';
 
 export default props =>
     <Switch>
         <Route exact path='/' component={Home} />
-        <Route path='/users' component={UserCrud} />
+        <Route exact path='/login' component={Login} />
+        <Route exact path='/admin' component={Admin} />
+        <Route path='/admin/users' component={UserCrud} />
         <Redirect from='*' to='/' />
     </Switch>
