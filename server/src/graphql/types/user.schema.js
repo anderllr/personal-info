@@ -6,6 +6,10 @@ const userTypes = `
         email: String!
     }
 
+    type Token {
+        token: String!
+    }
+
     input UserCreateInput {
         email: String!
         password: String!
@@ -20,6 +24,8 @@ const userTypes = `
 const userQueries = `
     users: [ User ]
     user(id: ID!): User!
+    authUser: User!
+    login(email: String!, password: String!): Token
 `;
 
 const userMutations = `
