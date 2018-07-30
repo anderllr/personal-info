@@ -9,12 +9,13 @@ import { AUTH_USER } from '../components/resources/queries/userQuery';
 import './App.css';
 
 export default ({ component: Component, ...rest }) => (
-    <Query query={AUTH_USER}>
+    <Query
+        query={AUTH_USER}
+        pollInterval={500}
+    >
         {({ loading, error, data }) => {
-            console.log('Data: ', data);
             if (error) return <h1>{error.message}</h1>;
             if (loading) return <h1>Loading...</h1>;
-
             return (
                 <Route
                     {...rest}
@@ -32,7 +33,6 @@ export default ({ component: Component, ...rest }) => (
                     }
                 />
             )
-
             return false;
         }}
     </Query>

@@ -24,7 +24,7 @@ const userTypes = `
 const userQueries = `
     users: [ User ]
     user(id: ID!): User!
-    authUser: User!
+    authUser: User
     login(email: String!, password: String!): Token
 `;
 

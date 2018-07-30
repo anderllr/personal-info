@@ -17,8 +17,10 @@ export default {
 			const user = await User.findById(args.id);
 			return user;
 		},
-		authUser: async (parent, args, { authUser }) => {
+		authUser: async (parent, args, { authUser, db }) => {
 			return authUser;
+			//const user = await db.User.findById("5b4e470dd8bc6e302cb1f6cf");
+			//return user;
 		},
 		login: async (parent, { email, password }, { db: { User } }) => {
 			const user = await User.findOne({ email });
