@@ -12,4 +12,10 @@ export default props =>
                 <i className="fa fa-users"></i> Usuários
             </Link>
         </nav>
+
+                    <button className="btn btn-outline-danger my-2 my-sm-0"
+                onClick={() => localStorage.removeItem('access_token')}
+            >
+
+                <i className="fa fa-sign-out"></i> Logout</button>
     </aside>;

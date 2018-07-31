@@ -17,3 +17,11 @@ export const AUTH_USER = gql`
     }
   }
 `;
+
+export const AUTH_LOGIN = gql`
+  query login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      token
+    }
+  }
+`;
