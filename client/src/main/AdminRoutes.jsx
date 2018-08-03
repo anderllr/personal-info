@@ -11,11 +11,12 @@ import './App.css';
 export default ({ component: Component, ...rest }) => (
     <Query
         query={AUTH_USER}
-        pollInterval={500}
+        fetchPolicy={'network-only'}
     >
         {({ loading, error, data }) => {
             if (error) return <h1>{error.message}</h1>;
             if (loading) return <h1>Loading...</h1>;
+            console.log('Auth User: ', data);
             return (
                 <Route
                     {...rest}
@@ -23,12 +24,12 @@ export default ({ component: Component, ...rest }) => (
                         data.authUser ? (
                             <div className='app'>
                                 <Logo />
-                                <Nav />
+                                <Nav {...props.history} />
                                 <Component {...props} />
                                 <Footer />
                             </div>
                         ) : (
-                                <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+                                <Redirect to={'/login'} />
                             )
                     }
                 />

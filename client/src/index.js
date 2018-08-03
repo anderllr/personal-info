@@ -20,7 +20,8 @@ const httpLink = new HttpLink({
 const cache = new InMemoryCache();
 
 const middlewareAuth = new ApolloLink((operation, forward) => {
-    const token = localStorage.getItem('access_token');
+    const token = sessionStorage.getItem('access_token');
+    console.log('Pegou o token: ', token);
     const authorization = token ? `Bearer ${token}` : null;
     operation.setContext({
         headers: {

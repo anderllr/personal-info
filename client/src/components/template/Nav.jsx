@@ -13,9 +13,12 @@ export default props =>
             </Link>
         </nav>
 
-                    <button className="btn btn-outline-danger my-2 my-sm-0"
-                onClick={() => localStorage.removeItem('access_token')}
-            >
+        <button className="btn btn-outline-danger my-2 my-sm-0"
+            onClick={() => {
+                sessionStorage.removeItem('access_token');
+                props.push('/login');
+            }}
+        >
 
-                <i className="fa fa-sign-out"></i> Logout</button>
+            <i className="fa fa-sign-out"></i> Logout</button>
     </aside>;

@@ -4,6 +4,7 @@ import { ApolloConsumer } from 'react-apollo';
 import { AUTH_LOGIN } from '../resources/queries/userQuery';
 import logo from '../../assets/img/logo.png';
 import './Login.css';
+import FormErrors from '../utils/FormErrors';
 
 /*
 *  In this page I used ApolloConsumer because I want to fire my query after user click on button
@@ -15,19 +16,65 @@ class Login extends Component {
         email: '',
         password: '',
         remember: false,
-        error: ''
+        formErrors: { email: '', password: '' },
+        serverErrors: '',
+        emailValid: false,
+        passwordValid: false,
+        formValid: false
+    }
+
+    constructor(props) {
+        super(props);
+        this.onLogin = this.onLogin.bind(this);
+    }
+
+    validateField(fieldName, value) {
+        let fieldValidationErrors = this.state.formErrors;
+        let emailValid = this.state.emailValid;
+        let passwordValid = this.state.passwordValid;
+
+        switch (fieldName) {
+            case 'email':
+                emailValid = value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+                fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+                break;
+            case 'password':
+                passwordValid = value.match(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/);
+                fieldValidationErrors.password = passwordValid ? '' : ' must have at least 8 characters, one uppercase letter and one number';
+                break;
+            default:
+                break;
+        }
+
+        this.setState({
+            formErrors: fieldValidationErrors,
+            emailValid: emailValid,
+            passwordValid: passwordValid
+        }, this.validateForm);
+    }
+
+    validateForm() {
+        this.setState({ formValid: this.state.emailValid && this.state.passwordValid });
+    }
+
+    errorClass(error) {
+        return (error.length === 0 ? '' : 'has-error');
     }
 
     onChange(e) {
-        this.setState({ [e.target.name]: e.target.value, error: '' });
+        const name = e.target.name;
+        const value = e.target.value;
+        this.setState({ [name]: value, serverErrors: '' },
+            () => { this.validateField(name, value) });
     }
 
     async onLogin(token) {
         if (token) {
             //TODO: Put the name of token in a security place
-            await localStorage.setItem('access_token', token);
+            await sessionStorage.setItem('access_token', token);
             //On successfull we redirect to admin page
-            this.props.history.replace('/admin');
+            console.log('Vai redirecionar: ', token);
+            this.props.history.push('/admin');
         }
     }
 
@@ -51,26 +98,27 @@ class Login extends Component {
                                             </div>
                                             <div className="card-body">
                                                 <div className="form">
-                                                    <div className="form-group">
+                                                    <div className={`form-group ${this.errorClass(this.state.formErrors.email)}`}>
                                                         <label>Email</label>
                                                         <input type="text" className="form-control form-control-lg rounded-0" name="email" required=""
                                                             onChange={e => this.onChange(e)}
                                                         />
-                                                        <div className="invalid-feedback">Oops, you missed this one.</div>
                                                     </div>
                                                     <div className="form-group">
                                                         <label>Password</label>
                                                         <input type="password" className="form-control form-control-lg rounded-0" name="password" required="" autoComplete="new-password"
                                                             onChange={e => this.onChange(e)}
                                                         />
-                                                        <div className="invalid-feedback">Enter your password too!</div>
+
                                                     </div>
                                                     <div>
                                                         <label>
                                                             <input type="checkbox" value="remember-me" /> Remember me on this computer
                                                         </label>
                                                     </div>
-                                                    <button className="btn btn-success btn-lg float-right" id="btnLogin"
+                                                    <button className="btn btn-success btn-lg float-right"
+                                                        disabled={!this.state.formValid}
+                                                        id="btnLogin"
                                                         onClick={() => client.query({
                                                             query: AUTH_LOGIN,
                                                             variables: {
@@ -83,15 +131,20 @@ class Login extends Component {
                                                                 this.onLogin(token);
                                                             })
                                                             .catch(({ graphQLErrors }) => {
-                                                                this.setState({ error: graphQLErrors[0].message });
+                                                                this.setState({ serverErrors: graphQLErrors[0].message });
                                                             })
 
                                                         }
                                                     >Login</button>
                                                 </div>
-                                            </div>
-                                        </div>
 
+                                            </div>
+
+                                        </div>
+                                        <div className="card rounded-0 d-flex justify-content-center align-items-center">
+                                            <FormErrors formErrors={this.state.formErrors} />
+                                            <div className="text-danger">{this.state.serverErrors}</div>
+                                        </div>
                                     </div>
 
 
